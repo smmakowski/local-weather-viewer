@@ -1,3 +1,18 @@
 /* INSERT CUSTOM STYLES BELOW */
 /* BOOTSTRAP (WITH NORMALIZE.CSS BUILT IN) IS ALREADY LINKED AND READY TO USE */
 /* ADDING CUSTOM CSS STYLING IS OPTIONAL */
+body {
+  background-image: url("http://katelynjeffrey.net/grid_demo/Simple_Grid-WEB/images/1.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#info, #loading {
+  margin-top: 30px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+hr {
+  border-width: 3px;
+}

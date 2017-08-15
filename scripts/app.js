@@ -66,11 +66,13 @@ $(document).ready(function() {
     lon: -121.8863,
   }
   // variables that may change due to conversion
-  var units = 'M' // init a I (for imperial);
+  var units = 'M' // init a I (for imperial) M (for metrix);
   var temp;
   var high;
   var low;
   var wind;
+  var rain;
+  var vis;
 
   $('#info').hide();
 
@@ -79,17 +81,20 @@ $(document).ready(function() {
     navigator.geolocation.getCurrentPosition(function(pos) {
       currPos['lat'] = pos.coords.latitude;
       currPos['lon'] = pos.coords.longitude;
-      $.getJSON(baseURL + 'lat=' + currPos.lat + '&lon=' + currPos.lon, function(json){
+      $.getJSON(baseURL + 'lat=' + currPos.lat + '&lon=' + currPos.lon)
+       .done(function(json) {
         console.log(json);
         temp = json.main.temp;
         high = json.main.temp_max;
         low = json.main.temp_min;
         wind = json.wind.speed * 1.60934; // originally in km/h?
+        vis = json.visibility / 5024;
         var humidity = json.main.humidity;
         var sunrise = json.sys.temp_sunrise;
         var location = json.name + ', ' + json.sys.country;
         var description = capitalize(json.weather[0]['description']);
         var iconURL = json.weather[0].icon;
+
         setBackground(json.dt, json.sys.sunrise, json.sys.sunset);
 
         $('#location').text(location);
@@ -102,10 +107,12 @@ $(document).ready(function() {
         $('#deg').text(findWindDirection(json.wind.deg))
         $('#hum').text(humidity + '%')
         $('#dt').text(getDateAsOf(json.dt));
+        $('#vis').text(vis.toString().slice(0))
         $('#loading').hide();
         $('#info').fadeIn(1000);
-      }, function(err) {
-        // handle failure to acquire API data
+      })
+      .fail(function() {
+        console.log('FAILED');
       });
     });
   } else {
