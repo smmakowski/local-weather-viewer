@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> <!--INSERT PAGE TITLE HERE--></title>
+    <title>Local Weather Viewer</title>
     <link href="./styles/main.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
     integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -13,22 +13,28 @@
   </head>
   <body>
     <h1 class="text-center">Local Weather Viewer</h1>
+    <h4 class="text-center" id="dt"></h4>
     <!--DELETE THE ABOVE DIV AND ITS CONTENT AND INSERT YOUR CONTENT HERE-->
-    <div class="container text-left">
+    <div id="loading" class="container well text-center">
+      <h1>Awaiting Geolocation and Weather Information...</h1>
+      <img src="https://assets.feedblitz.com/images/spinner.gif"></image>
+    </div>
+    </div>
+    <div class="container well" id="info">
       <div class="row">
         <h3 id="location">Awaiting Location Data...</h3>
       </div>
       <div class="row">
         <div class="col-xs-2">
-          <img class="img-responsive" id="icon" src="#"></img>
+          <img  id="icon" src="#"></img>
         </div>
         <div class="col-xs-4">
           <h2><small>Temperature: </small><span id="temp">- -</span>°<span class="deg"></span></h3>
         </div>
-        <div class="col-xs-2">
+        <div class="col-xs-3">
           <h4><small>Low: </small><span id="low">- -</span>°<span class="deg"></span></h4>
         </div>
-        <div class="col-xs-2">
+        <div class="col-xs-3">
           <h4><small>High: </small><span id="high">- -</span>°<span class="deg"></span></h4>
         </div>
       </div>
@@ -38,11 +44,8 @@
       <div class="row">
         <h4><small>Wind: </small><span id="wind"></span><span id="deg"></span><span id="speed"></span></h4>
         <h4><small>Humidity: </small><span id="wind"></span><span id="hum"></span></h4>
-        <
       </div>
     </div>
-
-
   </body>
     <script src="./scripts/app.js"></script>
 </html>

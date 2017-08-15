@@ -10,17 +10,32 @@ $(document).ready(function() {
     return words.join(' ');
   }
 
-  function toggleUnits(fromNum, fromUnit) {
-    if (fromUnit === 'C') {
+  function toggleTemp(fromNum, fromUnit) {
+    if (fromUnit === 'M') {
       return fromUnit * (9/5) + 32;
     }
     return (fromUnit - 32) * (5/9);
   }
 
+  function toggleSpeed(fromNum, fromUnit) {
+    if ( fromUnit === 'M') {
+      return;
+    }
+    return;
+  }
+
+  function getDateAsOf(dt) {
+    var date = new Date(dt * 1000);
+    return 'as of ' + date.toUTCString();
+  }
+
   // check to see how this function behaves in the morning
   function setBackground(dt, sunrise, sunset) {
-    if (dt > sunrise  && dt < sunset) {
-      $('body').css('background-image', 'url("http://eskipaper.com/sunny-day-background.html#gal_post_32061_sunny-day-background-1.jpg"');
+    console.log(dt, sunrise, sunset);
+    if (dt > sunrise && dt < sunset) {
+      console.log('DAYTIME!')
+      // original source http://leominsterchiropractic.com/2015/11/11/understanding-vitamin-d/sun-in-the-sky-wallpapersgood/
+      $('body').css('background-image', 'url("http://leominsterchiropractic.com/blog/wp-content/uploads/2015/11/Sun-In-The-Sky-Wallpapersgood.jpg"');
     } else {
       $('body').css('background-image', 'url("http://goldwallpapers.com/uploads/posts/night-time-backgrounds/night_time_backgrounds_023.jpg"');
     }
@@ -51,11 +66,13 @@ $(document).ready(function() {
     lon: -121.8863,
   }
   // variables that may change due to conversion
-  var units = '' // init a I (for imperial);
+  var units = 'M' // init a I (for imperial);
   var temp;
   var high;
   var low;
   var wind;
+
+  $('#info').hide();
 
   var baseURL = 'https://fcc-weather-api.glitch.me/api/current?';
   if (navigator.geolocation) {
@@ -67,7 +84,7 @@ $(document).ready(function() {
         temp = json.main.temp;
         high = json.main.temp_max;
         low = json.main.temp_min;
-        wind = json.wind.speed * 1.60934;
+        wind = json.wind.speed * 1.60934; // originally in km/h?
         var humidity = json.main.humidity;
         var sunrise = json.sys.temp_sunrise;
         var location = json.name + ', ' + json.sys.country;
@@ -84,9 +101,17 @@ $(document).ready(function() {
         $('#wind').text(Math.floor(wind));
         $('#deg').text(findWindDirection(json.wind.deg))
         $('#hum').text(humidity + '%')
+        $('#dt').text(getDateAsOf(json.dt));
+        $('#loading').hide();
+        $('#info').fadeIn(1000);
+      }, function(err) {
+        // handle failure to acquire API data
       });
     });
+  } else {
+    // default to san jose lat/long and attempt API request
   }
+
 
 
 });
