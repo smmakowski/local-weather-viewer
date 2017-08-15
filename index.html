@@ -12,28 +12,33 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   </head>
   <body>
-    <h1>Local Weather viewer</h1>
+    <h1 class="text-center">Local Weather Viewer</h1>
     <!--DELETE THE ABOVE DIV AND ITS CONTENT AND INSERT YOUR CONTENT HERE-->
-    <div class="container">
+    <div class="container text-left">
       <div class="row">
-        <h3 id="location"></h3>
+        <h3 id="location">Awaiting Location Data...</h3>
       </div>
       <div class="row">
-        <div class="col-xs-3">
+        <div class="col-xs-2">
           <img class="img-responsive" id="icon" src="#"></img>
         </div>
-        <div class="col-xs-3">
-          <h2><small>Temperature: </small><span id="temp">- -</span></h3>
+        <div class="col-xs-4">
+          <h2><small>Temperature: </small><span id="temp">- -</span>°<span class="deg"></span></h3>
         </div>
-        <div class="col-xs-3">
-          <h4><small>Low: </small><span id="low">- -</span></h4>
+        <div class="col-xs-2">
+          <h4><small>Low: </small><span id="low">- -</span>°<span class="deg"></span></h4>
         </div>
-        <div class="col-xs-3">
-          <h4><small>High:</small><span id="high">- -</span></h4>
+        <div class="col-xs-2">
+          <h4><small>High: </small><span id="high">- -</span>°<span class="deg"></span></h4>
         </div>
       </div>
       <div class="row">
-        <h4 id="description">Weather Unknown</h4>
+        <h4 id="description">Awaiting Weather Data...</h4>
+      </div>
+      <div class="row">
+        <h4><small>Wind: </small><span id="wind"></span><span id="deg"></span><span id="speed"></span></h4>
+        <h4><small>Humidity: </small><span id="wind"></span><span id="hum"></span></h4>
+        <
       </div>
     </div>
 
