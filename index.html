@@ -12,16 +12,29 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   </head>
   <body>
-    <div class="text-center" id="placeholder" >
-      <h1><i class="fa fa-hand-peace-o"></i> Hello World <i class="fa fa-hand-peace-o"></i></h1>
-      <p>This a basic html/css/javascript starter that you can use for your projects.</p>
-      <p>I hope it helps! Have fun!</p>
-    </div>
     <h1>Local Weather viewer</h1>
     <!--DELETE THE ABOVE DIV AND ITS CONTENT AND INSERT YOUR CONTENT HERE-->
-    <div>
-      <img id="icon" src="#"></img>
-      <h3><small>Temperature:</small><span id="temp"></span>*<span id=units></span></h3>
+    <div class="container">
+      <div class="row">
+        <h3 id="location"></h3>
+      </div>
+      <div class="row">
+        <div class="col-xs-3">
+          <img class="img-responsive" id="icon" src="#"></img>
+        </div>
+        <div class="col-xs-3">
+          <h2><small>Temperature: </small><span id="temp">- -</span></h3>
+        </div>
+        <div class="col-xs-3">
+          <h4><small>Low: </small><span id="low">- -</span></h4>
+        </div>
+        <div class="col-xs-3">
+          <h4><small>High:</small><span id="high">- -</span></h4>
+        </div>
+      </div>
+      <div class="row">
+        <h4 id="description">Weather Unknown</h4>
+      </div>
     </div>
 
 
