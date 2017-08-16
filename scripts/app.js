@@ -24,10 +24,9 @@ $(document).ready(function() {
   function getDateAsOf(dt) {
     var date = new Date(dt * 1000);
     return getMonth(date.getMonth()) + ' ' + date.getDate() + ', ' +
-    date.getFullYear() + ' - ' + getTimeString(dt) + ' (local time)';
+    date.getFullYear() + ' - ' + getTimeString(dt);
   }
 
-  // check to see how this function behaves in the morning
   function setBackground(dt, sunrise, sunset) {
     var curr = minuteTotal(dt);
     var rise = minuteTotal(sunrise);
@@ -98,9 +97,11 @@ $(document).ready(function() {
     $('#low').text(Math.round(low));
     $('.deg').text(unit);
   }
+
   function cToF(temp) {
     return temp * (9 / 5) + 32;
   }
+
   function fToC(temp) {
     return (temp - 32) * (5/9);
   }
@@ -121,8 +122,6 @@ $(document).ready(function() {
       $('#convert').text('°F');
       displayTemps();
     }
-
-
   }
 
   function getWeather(lat, lon) {
@@ -132,8 +131,8 @@ $(document).ready(function() {
       temp = json.main.temp;
       high = json.main.temp_max;
       low = json.main.temp_min;
-      var wind = Math.round(json.wind.speed * 1.15078); // originally in knots!
-      var vis = Math.round(json.visibility * 0.000621371); // orginally in meters?
+      var wind = Math.round(json.wind.speed * 1.15078);
+      var vis = Math.round(json.visibility * 0.000621371);
       var humidity = json.main.humidity;
       var sunrise = getTimeString(json.sys.sunrise);
       var sunset = getTimeString(json.sys.sunset)
@@ -144,7 +143,7 @@ $(document).ready(function() {
 
       setBackground(json.dt, json.sys.sunrise, json.sys.sunset);
       displayTemps();
-      $('#loading').fadeOut();
+      $('#loading').hide();
       $('#location').text(location);
       $("#icon").attr('src', iconURL);
 
@@ -159,15 +158,15 @@ $(document).ready(function() {
       $('#info').fadeIn(1000);
       $('#rain').text(rain);
     })
-    .fail(function() {
+    .fail(function(err) {
+      console.log(err);
       $('#loading').hide();
       $('#fail').show();
     });
   }
 
-  // variables that may change due to conversion
   var baseURL = 'https://fcc-weather-api.glitch.me/api/current?';
-  var unit = 'C' // init a I (for imperial) M (for metrix);
+  var unit = 'C';
   var hide = true;
   var temp;
   var high;
@@ -177,19 +176,14 @@ $(document).ready(function() {
     navigator.geolocation.getCurrentPosition(function(pos) {
       getWeather(pos.coords.latitude, pos.coords.longitude);
     }, function (err) {
-      // if geolocation has an error
-      alert('There seems to have been a problem with finding your current location.' +
-      ' It is possible that that there was an error finding your coordinates, or you ' +
-      'may have selected "block", when prompted.' +
-      ' For the purpose of demonstration, Weather information for a default location will be acquired');
-      getWeather(37.3382, -121.8863);
+      console.log(err);
+      $('#loading').hide();
+      $('#fail').show();
     });
   } else {
-     // if geolocation not supported
-     alert('There seems to have been a problem with finding your current location.' +
-     ' It is possible your browser does not support HTML5 geolocation.' +
-     ' For the purpose of demonstration, Weather information for a default location will be acquired');
-     getWeather(37.3382, -121.8863);
+    $('#loading').hide();
+    console.log('fail')
+    $('#fail').show();
   }
 
   $('#convert').on('click', function() {
@@ -209,6 +203,5 @@ $(document).ready(function() {
         $('#hide').addClass('btn-success');
         hide = true;
       }
-
   });
 });

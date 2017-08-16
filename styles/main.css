@@ -2,18 +2,38 @@
 /* BOOTSTRAP (WITH NORMALIZE.CSS BUILT IN) IS ALREADY LINKED AND READY TO USE */
 /* ADDING CUSTOM CSS STYLING IS OPTIONAL */
 body {
-  background-image: url("http://katelynjeffrey.net/grid_demo/Simple_Grid-WEB/images/1.jpg");
-  background-repeat: no-repeat;
-  background-position: center;
+  background-image: url("https://www.nasa.gov/centers/goddard/images/content/638831main_globe_east_2048.jpg");
+  background-position: 50% 0;
 }
 
-#info, #loading, #api-fail{
+li {
+  text-align: left;
+}
+
+#info, #loading, #fail{
   margin-top: 30px;
   opacity: 0.8;
 }
 
-#info, #api-fail {
+#info, #fail {
   display: none;
+}
+
+.sec {
+  border: solid 1px gray;
+  height:105px;
+}
+
+.left-outer {
+  border-radius: 3px 0 0 3px;
+}
+
+.right-outer {
+  border-radius: 0 3px 3px 0;
+}
+
+.right-outer {
+
 }
 
 #location {
@@ -35,8 +55,9 @@ body {
 #location {
   padding-left: 16px;
 }
+
 @media screen and (max-width: 590px) {
-  #info, #loading, #api-fail{
+  #info, #loading, #fail{
     margin-top: 30px;
     margin-left: 10px;
     margin-right: 10px;
@@ -44,7 +65,7 @@ body {
   }
 }
 @media screen and (min-width: 591px) {
-  #info, #loading, #api-fail{
+  #info, #loading, #fail {
     margin-top: 30px;
     width: 550px;
     opacity: 0.8;

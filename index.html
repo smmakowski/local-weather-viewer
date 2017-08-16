@@ -23,33 +23,33 @@
         <h3 id="location"></h3>
       </div>
       <div class="row">
-        <div class="col-xs-3 ">
+        <div class="col-xs-3 sec left-outer">
           <h3><small>Temp: </small><span id="temp"></span>°<span class="deg"></span></h3>
         </div>
-        <div class="col-xs-3 text-center">
+        <div class="col-xs-3 sec text-center">
           <h4><small>High: </small><span id="high"></span>°<span class="deg"></span></h4>
           <h4><small>Low: </small><span id="low"></span>°<span class="deg"></span></h4>
         </div>
-        <div class="col-xs-3">
+        <div class="col-xs-3 sec">
           <h4><small>Convert to:</small></h4>
           <button id="convert" class="btn btn-primary">°F</button>
         </div>
-        <div class="col-xs-3">
+        <div class="col-xs-3 sec right-outer">
           <img  id="icon" src="#"></img>
           <h4 id="description"></h4>
         </div>
       </div>
       <hr>
       <div id="other" class="row">
-        <div class="col-xs-4">
+        <div class="col-xs-4 sec left-outer">
           <h4><small>Visibility: </small><span id="vis"></span></h4>
           <h4><small>Wind: </small><span id="wind"></span></h4>
         </div>
-        <div class="col-xs-4">
+        <div class="col-xs-4 sec">
           <h4><small>Humidity: </small><span id="hum"></span></h4>
           <h4><small>Precipitation: </small><span id="rain"></span></span></h4>
         </div>
-        <div class="col-xs-4">
+        <div class="col-xs-4 sec right-outer">
           <h4><small>Sunset: </small><span id="set"></span></h4>
           <h4><small>Sunrise: </small><span id="rise"></span></h4>
         </div>
@@ -58,9 +58,16 @@
         <button class="btn btn-success" id="hide">Show Additional Info</button>
       </div>
     </div>
-    <div class="container well text-center" id="api-fail">
+    <div class="container well text-center" id="fail">
       <h4>We've encountered an error!</h4>
-      <p>It seems like the API call could not be completed successfully.</P>
+      <p>It seems like something has gone wrong.
+        This chould have been for one of the following reasons:</p>
+      <ol>
+        <li>Geolocation might not be supported by the browser</li>
+        <li>"block" may be been selected when asked for permission to know location</li>
+        <li>There may have been an error when aquiring coordinates</li>
+        <li>There may have been an error during the API request</li>
+      </ol>
       </p>Please refresh this window or try again later.</p>
     </div>
     <div class="text-center" id="footer">
