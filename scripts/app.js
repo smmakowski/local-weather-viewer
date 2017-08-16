@@ -10,20 +10,6 @@ $(document).ready(function() {
     return words.join(' ');
   }
 
-  function toggleTemp(fromNum, fromUnit) {
-    if (fromUnit === 'M') {
-      return fromUnit * (9/5) + 32;
-    }
-    return (fromUnit - 32) * (5/9);
-  }
-
-  function toggleSpeed(fromNum, fromUnit) {
-    if ( fromUnit === 'M') {
-      return;
-    }
-    return;
-  }
-
   function getDateAsOf(dt) {
     var date = new Date(dt * 1000);
     return 'as of ' + date.toUTCString();
@@ -34,14 +20,13 @@ $(document).ready(function() {
     console.log(dt, sunrise, sunset);
     if (dt > sunrise && dt < sunset) {
       console.log('DAYTIME!')
-      // original source http://leominsterchiropractic.com/2015/11/11/understanding-vitamin-d/sun-in-the-sky-wallpapersgood/
       $('body').css('background-image', 'url("http://leominsterchiropractic.com/blog/wp-content/uploads/2015/11/Sun-In-The-Sky-Wallpapersgood.jpg"');
     } else {
       $('body').css('background-image', 'url("http://goldwallpapers.com/uploads/posts/night-time-backgrounds/night_time_backgrounds_023.jpg"');
     }
   }
 
-  function findWindDirection(degree) {
+  function findWindDirection(deg) {
     if (deg >= 337.5 && deg <= 22.5) {
       return 'N';
     } else if (deg <= 67.5) {
@@ -61,64 +46,123 @@ $(document).ready(function() {
     }
   }
 
-  var currPos = {
-    lat: 37.3382,
-    lon: -121.8863,
+  function getTime(time) {
+    var date = new Date(time * 1000);
+    var hour = date.getHours();
+    var minute = date.getMinutes();
+
+    if (hour >= 12) {
+      if (hour > 12) {
+        hour -= 12;
+      }
+      return hour + ':' + minute + 'pm';
+    } else {
+      if (hour === 0) {
+        hour = 12;
+      }
+      return hour + ':' + minute + 'am';
+    }
   }
+
+  function getPrecipitation(rainObj){
+    if (rainObj) {
+      return Math.floor(rainObj['3r'] * 100) + '%';
+    }
+    return '0%';
+  }
+
+  function displayTemps() {
+    $('#temp').text(Math.round(temp));
+    $('#high').text(Math.round(high));
+    $('#low').text(Math.round(low));
+    $('.deg').text(unit);
+  }
+  function cToF(temp) {
+    return temp * (9 / 5) + 32;
+  }
+  function fToC(temp) {
+    return (temp - 32) * (5/9);
+  }
+
+  function toggleTemp() {
+    if (unit === 'C') {
+      temp = cToF(temp);
+      high = cToF(high);
+      low = cToF(low);
+      unit = 'F';
+      $('button').text('°C');
+      displayTemps();
+    } else {
+      temp = fToC(temp);
+      high = fToC(high);
+      low = fToC(low);
+      unit = 'C';
+      $('button').text('°F');
+      displayTemps();
+    }
+
+
+  }
+
+  function getWeather(lat, lon) {
+    $.getJSON(baseURL + 'lat=' + lat + '&lon=' + lon)
+     .done(function(json) {
+      console.log(json);
+      temp = json.main.temp;
+      high = json.main.temp_max;
+      low = json.main.temp_min;
+      var wind = Math.floor(json.wind.speed * 1.60934); // originally in km/h?
+      var vis = Math.floor(json.visibility * 0.000621371); // orginally in meters?
+      var humidity = json.main.humidity;
+      var sunrise = getTime(json.sys.sunrise);
+      var sunset = getTime(json.sys.sunset)
+      var location = json.name + ', ' + json.sys.country;
+      var description = capitalize(json.weather[0]['description']);
+      var iconURL = json.weather[0].icon;
+      var rain = getPrecipitation(json.rain);
+
+      setBackground(json.dt, json.sys.sunrise, json.sys.sunset);
+      displayTemps();
+      $('#loading').fadeOut();
+      $('#location').text(location);
+      $("#icon").attr('src', iconURL);
+
+      $('#description').text(description);
+      $('#wind').text(wind + 'mph ' + findWindDirection(json.wind.deg));
+      $('#set').text(sunset);
+      $('#rise').text(sunrise);
+      $('#hum').text(humidity + '%');
+      $('#dt').text(getDateAsOf(json.dt));
+      $('#vis').text(vis + 'mi');
+
+      $('#info').fadeIn(1000);
+      $('#rain').text(rain);
+    })
+    .fail(function() {
+      $('#loading').hide();
+      $('#fail').show();
+    });
+  }
+
   // variables that may change due to conversion
-  var units = 'M' // init a I (for imperial) M (for metrix);
+  var baseURL = 'https://fcc-weather-api.glitch.me/api/current?';
+  var unit = 'C' // init a I (for imperial) M (for metrix);
   var temp;
   var high;
   var low;
-  var wind;
-  var rain;
-  var vis;
 
-  $('#info').hide();
-
-  var baseURL = 'https://fcc-weather-api.glitch.me/api/current?';
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(pos) {
-      currPos['lat'] = pos.coords.latitude;
-      currPos['lon'] = pos.coords.longitude;
-      $.getJSON(baseURL + 'lat=' + currPos.lat + '&lon=' + currPos.lon)
-       .done(function(json) {
-        console.log(json);
-        temp = json.main.temp;
-        high = json.main.temp_max;
-        low = json.main.temp_min;
-        wind = json.wind.speed * 1.60934; // originally in km/h?
-        vis = json.visibility / 5024;
-        var humidity = json.main.humidity;
-        var sunrise = json.sys.temp_sunrise;
-        var location = json.name + ', ' + json.sys.country;
-        var description = capitalize(json.weather[0]['description']);
-        var iconURL = json.weather[0].icon;
-
-        setBackground(json.dt, json.sys.sunrise, json.sys.sunset);
-
-        $('#location').text(location);
-        $("#icon").attr('src', iconURL);
-        $('#temp').text(temp);
-        $('#high').text(high);
-        $('#low').text(low);
-        $('#description').text(description);
-        $('#wind').text(Math.floor(wind));
-        $('#deg').text(findWindDirection(json.wind.deg))
-        $('#hum').text(humidity + '%')
-        $('#dt').text(getDateAsOf(json.dt));
-        $('#vis').text(vis.toString().slice(0))
-        $('#loading').hide();
-        $('#info').fadeIn(1000);
-      })
-      .fail(function() {
-        console.log('FAILED');
-      });
+      getWeather(pos.coords.latitude, pos.coords.longitude);
+    }, function (err) {
+      // if geolocation has an error
     });
   } else {
-    // default to san jose lat/long and attempt API request
+     // if geolocation not supported
   }
 
-
+  $('button').on('click', function() {
+    toggleTemp();
+  });
 
 });
