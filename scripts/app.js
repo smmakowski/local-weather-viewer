@@ -1,4 +1,9 @@
 $(document).ready(function() {
+  function minuteTotal(time) {
+    var date = new Date(time * 1000);
+    return (date.getHours() * 60) + date.getMinutes();
+  }
+
   function capitalize(str) {
     var words = str.split(' ');
     words = words.map(function(word) {
@@ -10,15 +15,27 @@ $(document).ready(function() {
     return words.join(' ');
   }
 
+  function getMonth(idx){
+    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
+    'August', 'September', 'October', 'November', 'December'];
+
+    return months[idx];
+  }
   function getDateAsOf(dt) {
     var date = new Date(dt * 1000);
-    return 'as of ' + date.toUTCString();
+    return getMonth(date.getMonth()) + ' ' + date.getDate() + ', ' +
+    date.getFullYear() + ' - ' + getTimeString(dt) + ' (local time)';
   }
 
   // check to see how this function behaves in the morning
   function setBackground(dt, sunrise, sunset) {
+    var curr = minuteTotal(dt);
+    var rise = minuteTotal(sunrise);
+    var set = minuteTotal(sunset);
+
+    console.log(curr, rise, set);
     console.log(dt, sunrise, sunset);
-    if (dt > sunrise && dt < sunset) {
+    if (curr >= rise && curr < set) {
       console.log('DAYTIME!')
       $('body').css('background-image', 'url("http://leominsterchiropractic.com/blog/wp-content/uploads/2015/11/Sun-In-The-Sky-Wallpapersgood.jpg"');
     } else {
@@ -46,10 +63,14 @@ $(document).ready(function() {
     }
   }
 
-  function getTime(time) {
+  function getTimeString(time) {
     var date = new Date(time * 1000);
     var hour = date.getHours();
     var minute = date.getMinutes();
+
+    if (minute < 10) {
+      minute = '0' + minute;
+    }
 
     if (hour >= 12) {
       if (hour > 12) {
@@ -111,11 +132,11 @@ $(document).ready(function() {
       temp = json.main.temp;
       high = json.main.temp_max;
       low = json.main.temp_min;
-      var wind = Math.floor(json.wind.speed * 1.15078); // originally in knots!
-      var vis = Math.floor(json.visibility * 0.000621371); // orginally in meters?
+      var wind = Math.round(json.wind.speed * 1.15078); // originally in knots!
+      var vis = Math.round(json.visibility * 0.000621371); // orginally in meters?
       var humidity = json.main.humidity;
-      var sunrise = getTime(json.sys.sunrise);
-      var sunset = getTime(json.sys.sunset)
+      var sunrise = getTimeString(json.sys.sunrise);
+      var sunset = getTimeString(json.sys.sunset)
       var location = json.name + ', ' + json.sys.country;
       var description = capitalize(json.weather[0]['description']);
       var iconURL = json.weather[0].icon;
