@@ -27,7 +27,7 @@ $(document).ready(function() {
   function getDateAsOf(dt) {
     var date = new Date(dt * 1000);
 
-    return getMonth(date.getMonth()) + ' ' + date.getDate() + ', ' +
+    return 'as of ' + getMonth(date.getMonth()) + ' ' + date.getDate() + ', ' +
     date.getFullYear() + ' - ' + getTimeString(dt);
   }
 
@@ -143,13 +143,12 @@ $(document).ready(function() {
       var iconURL = json.weather[0].icon;
       var rain = getPrecipitation(json.rain);
       var dir = findWindDirection(json.wind.deg);
-      var adjDt = json.dt + 1500;
 
       temp = json.main.temp;
       high = json.main.temp_max;
       low = json.main.temp_min;
 
-      setBackground(adjDt, json.sys.sunrise, json.sys.sunset);
+      setBackground(json.dt, json.sys.sunrise, json.sys.sunset);
       displayTemps();
 
       $('#loading').hide();
@@ -160,7 +159,7 @@ $(document).ready(function() {
       $('#set').text(sunset);
       $('#rise').text(sunrise);
       $('#hum').text(humidity + '%');
-      $('#dt').text(getDateAsOf(adjDt));
+      $('#dt').text(getDateAsOf(json.dt));
       $('#vis').text(vis + 'mi');
       $('#info').fadeIn(1000);
       $('#rain').text(rain);
