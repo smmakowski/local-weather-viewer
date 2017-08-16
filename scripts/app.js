@@ -157,9 +157,18 @@ $(document).ready(function() {
       getWeather(pos.coords.latitude, pos.coords.longitude);
     }, function (err) {
       // if geolocation has an error
+      alert('There seems to have been a problem with finding your current location.' +
+      ' It is possible that that there was an error finding your coordinates, or you ' +
+      'may have selected "block", when prompted.' +
+      ' For the purpose of demonstration, Weather information for a default location will be acquired');
+      getWeather(37.3382, -121.8863);
     });
   } else {
      // if geolocation not supported
+     alert('There seems to have been a problem with finding your current location.' +
+     ' It is possible your browser does not support HTML5 geolocation.' +
+     ' For the purpose of demonstration, Weather information for a default location will be acquired');
+     getWeather(37.3382, -121.8863);
   }
 
   $('#convert').on('click', function() {
