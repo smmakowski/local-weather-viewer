@@ -1,14 +1,17 @@
 $(document).ready(function() {
   function minuteTotal(time) {
     var date = new Date(time * 1000);
+
     return (date.getHours() * 60) + date.getMinutes();
   }
 
   function capitalize(str) {
     var words = str.split(' ');
+
     words = words.map(function(word) {
-      let letters = word.split('');
+      var letters = word.split('');
       letters[0] = letters[0].toUpperCase();
+
       return letters.join('');
     });
 
@@ -18,11 +21,12 @@ $(document).ready(function() {
   function getMonth(idx){
     var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
     'August', 'September', 'October', 'November', 'December'];
-
     return months[idx];
   }
+
   function getDateAsOf(dt) {
     var date = new Date(dt * 1000);
+
     return getMonth(date.getMonth()) + ' ' + date.getDate() + ', ' +
     date.getFullYear() + ' - ' + getTimeString(dt);
   }
@@ -32,14 +36,13 @@ $(document).ready(function() {
     var rise = minuteTotal(sunrise);
     var set = minuteTotal(sunset);
 
-    console.log(curr, rise, set);
-    console.log(dt, sunrise, sunset);
     if (curr >= rise && curr < set) {
-      console.log('DAYTIME!')
       $('body').css('background-image', 'url("http://leominsterchiropractic.com/blog/wp-content/uploads/2015/11/Sun-In-The-Sky-Wallpapersgood.jpg"');
     } else {
       $('body').css('background-image', 'url("http://goldwallpapers.com/uploads/posts/night-time-backgrounds/night_time_backgrounds_023.jpg"');
     }
+
+    return;
   }
 
   function findWindDirection(deg) {
@@ -75,11 +78,13 @@ $(document).ready(function() {
       if (hour > 12) {
         hour -= 12;
       }
+
       return hour + ':' + minute + 'pm';
     } else {
       if (hour === 0) {
         hour = 12;
       }
+
       return hour + ':' + minute + 'am';
     }
   }
@@ -88,6 +93,7 @@ $(document).ready(function() {
     if (rainObj) {
       return Math.floor(rainObj['3r'] * 100) + '%';
     }
+
     return '0%';
   }
 
@@ -127,10 +133,6 @@ $(document).ready(function() {
   function getWeather(lat, lon) {
     $.getJSON(baseURL + 'lat=' + lat + '&lon=' + lon)
      .done(function(json) {
-      console.log(json);
-      temp = json.main.temp;
-      high = json.main.temp_max;
-      low = json.main.temp_min;
       var wind = Math.round(json.wind.speed * 1.15078);
       var vis = Math.round(json.visibility * 0.000621371);
       var humidity = json.main.humidity;
@@ -140,26 +142,30 @@ $(document).ready(function() {
       var description = capitalize(json.weather[0]['description']);
       var iconURL = json.weather[0].icon;
       var rain = getPrecipitation(json.rain);
+      var dir = findWindDirection(json.wind.deg);
+      var adjDt = json.dt + 1500;
 
-      setBackground(json.dt, json.sys.sunrise, json.sys.sunset);
+      temp = json.main.temp;
+      high = json.main.temp_max;
+      low = json.main.temp_min;
+
+      setBackground(adjDt, json.sys.sunrise, json.sys.sunset);
       displayTemps();
+
       $('#loading').hide();
       $('#location').text(location);
       $("#icon").attr('src', iconURL);
-
       $('#description').text(description);
-      $('#wind').text(wind + 'mph ' + findWindDirection(json.wind.deg));
+      $('#wind').text(wind + 'mph ' + dir);
       $('#set').text(sunset);
       $('#rise').text(sunrise);
       $('#hum').text(humidity + '%');
-      $('#dt').text(getDateAsOf(json.dt));
+      $('#dt').text(getDateAsOf(adjDt));
       $('#vis').text(vis + 'mi');
-
       $('#info').fadeIn(1000);
       $('#rain').text(rain);
     })
     .fail(function(err) {
-      console.log(err);
       $('#loading').hide();
       $('#fail').show();
     });
@@ -176,13 +182,11 @@ $(document).ready(function() {
     navigator.geolocation.getCurrentPosition(function(pos) {
       getWeather(pos.coords.latitude, pos.coords.longitude);
     }, function (err) {
-      console.log(err);
       $('#loading').hide();
       $('#fail').show();
     });
   } else {
     $('#loading').hide();
-    console.log('fail')
     $('#fail').show();
   }
 
