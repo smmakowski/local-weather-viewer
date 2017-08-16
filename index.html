@@ -23,11 +23,7 @@
         <h3 id="location"></h3>
       </div>
       <div class="row">
-        <div class="col-xs-2">
-          <img  id="icon" src="#"></img>
-          <h4 id="description"></h4>
-        </div>
-        <div class="col-xs-4 text-right">
+        <div class="col-xs-3 ">
           <h3><small>Temp: </small><span id="temp"></span>°<span class="deg"></span></h3>
         </div>
         <div class="col-xs-3 text-center">
@@ -36,22 +32,30 @@
         </div>
         <div class="col-xs-3">
           <h4><small>Convert to:</small></h4>
-          <button class="btn btn-primary">°F</button>
+          <button id="convert" class="btn btn-primary">°F</button>
+        </div>
+        <div class="col-xs-3 text-center">
+          <img  id="icon" src="#"></img>
+          <h4 id="description"></h4>
         </div>
       </div>
-      <div class="row">
+      <hr>
+      <div id="other" class="row">
         <div class="col-xs-4">
           <h4><small>Visibility: </small><span id="vis"></span></h4>
           <h4><small>Wind: </small><span id="wind"></span></h4>
         </div>
         <div class="col-xs-4">
           <h4><small>Humidity: </small><span id="hum"></span></h4>
-          <h4><small>Rain (last 3 hours): </small><span id="rain"></span></span></h4>
+          <h4><small>Precipitation: </small><span id="rain"></span></span></h4>
         </div>
         <div class="col-xs-4">
           <h4><small>Sunset: </small><span id="set"></span></h4>
           <h4><small>Sunrise: </small><span id="rise"></span></h4>
         </div>
+      </div>
+      <div class="row text-center">
+        <button class="btn btn-success" id="hide">Show Additional Info</button>
       </div>
     </div>
     <div class="container well text-center" id="api-fail">

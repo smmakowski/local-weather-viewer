@@ -11,8 +11,20 @@ body {
   margin-top: 30px;
   margin-left: 20px;
   margin-right: 20px;
+  opacity: 0.8;
 }
 
 #info, #api-fail {
   display: none;
+}
+
+#location {
+  text-decoration: underline;
+}
+#other {
+  display: none;
+}
+
+#hide {
+  margin-top: 10px;
 }

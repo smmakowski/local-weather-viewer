@@ -90,14 +90,14 @@ $(document).ready(function() {
       high = cToF(high);
       low = cToF(low);
       unit = 'F';
-      $('button').text('°C');
+      $('#convert').text('°C');
       displayTemps();
     } else {
       temp = fToC(temp);
       high = fToC(high);
       low = fToC(low);
       unit = 'C';
-      $('button').text('°F');
+      $('#convert').text('°F');
       displayTemps();
     }
 
@@ -111,7 +111,7 @@ $(document).ready(function() {
       temp = json.main.temp;
       high = json.main.temp_max;
       low = json.main.temp_min;
-      var wind = Math.floor(json.wind.speed * 1.60934); // originally in km/h?
+      var wind = Math.floor(json.wind.speed * 1.15078); // originally in knots!
       var vis = Math.floor(json.visibility * 0.000621371); // orginally in meters?
       var humidity = json.main.humidity;
       var sunrise = getTime(json.sys.sunrise);
@@ -147,6 +147,7 @@ $(document).ready(function() {
   // variables that may change due to conversion
   var baseURL = 'https://fcc-weather-api.glitch.me/api/current?';
   var unit = 'C' // init a I (for imperial) M (for metrix);
+  var hide = true;
   var temp;
   var high;
   var low;
@@ -161,8 +162,23 @@ $(document).ready(function() {
      // if geolocation not supported
   }
 
-  $('button').on('click', function() {
+  $('#convert').on('click', function() {
     toggleTemp();
   });
 
+  $('#hide').on('click', function() {
+      $('#other').slideToggle();
+      if (hide === true) {
+        $('#hide').text('Hide Additional Info');
+        $('#hide').removeClass('btn-success');
+        $('#hide').addClass('btn-danger');
+        hide = false;
+      } else {
+        $('#hide').text('Show Additional Info');
+        $('#hide').removeClass('btn-danger');
+        $('#hide').addClass('btn-success');
+        hide = true;
+      }
+
+  });
 });
